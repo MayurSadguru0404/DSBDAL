@@ -1,0 +1,40 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = sns.load_dataset('iris')
+
+# -------------------------
+# 1. Features & Types
+# -------------------------
+print("Features:\n", df.columns)
+print("\nData Types:\n", df.dtypes)
+
+# -------------------------
+# 2. Histogram (Subplots)
+# -------------------------
+df.hist(figsize=(8,6))
+plt.suptitle("Histograms of Features")
+plt.show()
+
+# -------------------------
+# 3. Boxplot (Outliers Detection)
+# -------------------------
+df.plot(kind='box', subplots=True, layout=(2,2), figsize=(8,6))
+plt.suptitle("Boxplots for Outlier Detection")
+plt.show()
+
+# -------------------------
+# 4. Subplot Demonstration (Manual)
+# -------------------------
+features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
+
+plt.figure(figsize=(8,6))
+
+for i, f in enumerate(features):
+    plt.subplot(2,2,i+1)
+    sns.histplot(df[f])
+    plt.title(f)
+
+plt.tight_layout()
+plt.show()
