@@ -1,0 +1,53 @@
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = sns.load_dataset('titanic')
+
+# -------------------------
+# 1. Basic view (pattern check)
+# -------------------------
+print(df.head())
+print(df.describe())
+
+# -------------------------
+# 2. Histogram
+# -------------------------
+plt.hist(df['fare'])
+plt.title("Histogram of Fare")
+plt.show()
+
+# -------------------------
+# 3. Distplot (NOTE: deprecated in newer seaborn but used in viva)
+# -------------------------
+sns.histplot(df['fare'], kde=True)
+plt.title("Distplot (using histplot + KDE)")
+plt.show()
+
+# -------------------------
+# 4. Histplot
+# -------------------------
+sns.histplot(df['fare'])
+plt.title("Histplot of Fare")
+plt.show()
+
+# -------------------------
+# 5. Jointplot
+# -------------------------
+sns.jointplot(x='fare', y='age', data=df)
+plt.show()
+
+# -------------------------
+# 6. Rug plot
+# -------------------------
+sns.rugplot(df['fare'])
+plt.title("Rug Plot of Fare")
+plt.show()
+
+# -------------------------
+# 7. Barplot (average fare per class)
+# -------------------------
+sns.barplot(x='class', y='fare', data=df)
+plt.title("Barplot: Class vs Fare")
+plt.show()
