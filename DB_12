@@ -1,0 +1,40 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = sns.load_dataset('iris')
+
+# -------------------------
+# 1. Features & Types
+# -------------------------
+print("Columns:\n", df.columns)
+print("\nData Types:\n", df.dtypes)
+
+# -------------------------
+# 2. Histograms (Subplots)
+# -------------------------
+df.hist(figsize=(8,6))
+plt.suptitle("Histogram of all features")
+plt.show()
+
+# -------------------------
+# 3. Boxplots (Subplots)
+# -------------------------
+df.plot(kind='box', subplots=True, layout=(2,2), figsize=(8,6))
+plt.suptitle("Boxplot of all features")
+plt.show()
+
+# -------------------------
+# 4. Subplot Demonstration (Manual)
+# -------------------------
+features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
+
+plt.figure(figsize=(8,6))
+
+for i, feature in enumerate(features):
+    plt.subplot(2,2,i+1)
+    sns.histplot(df[feature])
+    plt.title(feature)
+
+plt.tight_layout()
+plt.show()
