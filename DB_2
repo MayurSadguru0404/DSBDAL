@@ -1,0 +1,62 @@
+# 1. Import library
+import pandas as pd
+
+# 3. Load dataset
+df = pd.read_csv("car.csv")
+
+print("First 5 rows:\n", df.head())
+
+# 4. Data Preprocessing
+
+# Shape
+print("\nShape:", df.shape)
+
+# Missing values
+print("\nMissing values:\n", df.isnull().sum())
+
+# Statistics
+print("\nStatistics:\n", df.describe())
+
+# Data types
+print("\nData Types:\n", df.dtypes)
+
+# Columns
+print("\nColumns:\n", df.columns)
+
+# ---------------------------------------------------
+# 5. Data Formatting (Type Conversion)
+# ---------------------------------------------------
+
+# Example conversions (apply only if needed)
+# Convert price to float (if not already)
+df['price'] = df['price'].astype(float)
+
+# Convert symboling to integer
+df['symboling'] = df['symboling'].astype(int)
+
+# Convert categorical column to category type
+df['fueltype'] = df['fueltype'].astype('category')
+
+print("\nData Types After Conversion:\n", df.dtypes)
+
+# ---------------------------------------------------
+# 6. Data Normalization (Scaling)
+# ---------------------------------------------------
+
+# Min-Max Normalization
+df['price'] = (df['price'] - df['price'].min()) / (df['price'].max() - df['price'].min())
+
+print("\nAfter Normalization:\n", df['price'].head())
+
+# ---------------------------------------------------
+# 7. Encoding
+# ---------------------------------------------------
+
+# Label Encoding (binary column)
+df['doornumber'] = df['doornumber'].map({'two': 0, 'four': 1})
+
+# One-Hot Encoding
+cat_cols = df.select_dtypes(include='object').columns
+df = pd.get_dummies(df, columns=cat_cols)
+
+print("\nFinal Data:\n", df.head())
