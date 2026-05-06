@@ -1,0 +1,25 @@
+import pandas as pd
+
+df = pd.read_csv("StudentsPerformance.csv")
+
+# Group by categorical variable (gender) and summarize numeric columns
+result = df.groupby('gender')[['math score','reading score','writing score']].agg(['mean','median','min','max','std'])
+
+print("Grouped Summary:\n", result)
+
+# Convert categorical to numeric
+df['gender_num'] = df['gender'].map({'male': 0, 'female': 1})
+
+print("Numeric list:\n", df['gender_num'].head())
+
+# Load iris dataset
+iris = pd.read_csv("iris.csv")
+
+# Filter each species and describe
+setosa = iris[iris['species'] == 'Iris-setosa']
+versicolor = iris[iris['species'] == 'Iris-versicolor']
+virginica = iris[iris['species'] == 'Iris-virginica']
+
+print("\nSetosa Stats:\n", setosa.describe())
+print("\nVersicolor Stats:\n", versicolor.describe())
+print("\nVirginica Stats:\n", virginica.describe())
