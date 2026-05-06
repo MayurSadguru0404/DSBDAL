@@ -1,0 +1,44 @@
+# 1. Import required library
+import pandas as pd
+
+# 2. Dataset description
+"""
+Dataset: Titanic Dataset
+Source: https://www.kaggle.com/datasets/yasserh/titanic-dataset
+
+Description:
+Contains passenger details like age, sex, class, fare, etc.
+Used to analyze survival prediction.
+"""
+
+# 3. Load dataset
+df = pd.read_csv("data.csv")   # your dataset file
+
+print("First 5 rows:\n", df.head())
+
+# 4. Data Preprocessing
+
+# Shape (dimensions)
+print("\nShape:", df.shape)
+
+# Missing values
+print("\nMissing values:\n", df.isnull().sum())
+
+# Statistics
+print("\nStatistics:\n", df.describe())
+
+# Data types
+print("\nData Types:\n", df.dtypes)
+
+# Columns
+print("\nColumns:\n", df.columns)
+
+# 5. Convert categorical → numerical
+
+# Example: Label Encoding
+df['Sex'] = df['Sex'].map({'male': 0, 'female': 1})
+
+# One-hot encoding
+df = pd.get_dummies(df, columns=['Embarked'])
+
+print("\nAfter Encoding:\n", df.head())
