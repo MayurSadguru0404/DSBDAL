@@ -1,0 +1,39 @@
+import pandas as pd
+
+# Load dataset
+df = pd.read_csv("academic.csv")
+
+# -------------------------------
+# 1. Missing values & inconsistencies
+# -------------------------------
+
+# Check missing values
+print("Missing values:\n", df.isnull().sum())
+
+# Handle missing values
+# Numeric → fill with mean
+num_cols = df.select_dtypes(include=['int64', 'float64']).columns
+df[num_cols] = df[num_cols].fillna(df[num_cols].mean())
+
+# Categorical → fill with mode
+cat_cols = df.select_dtypes(include='object').columns
+for col in cat_cols:
+    df[col].fillna(df[col].mode()[0])
+
+# -------------------------------
+# 2 & 3. Outlier detection & removal (IQR method)
+# -------------------------------
+
+for col in num_cols:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+
+    # Remove outliers
+    df = df[(df[col] >= lower) & (df[col] <= upper)]
+
+print("\nFinal Data Shape:", df.shape)
+print(df.head())
