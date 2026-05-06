@@ -1,0 +1,24 @@
+
+import pandas as pd
+
+# Load text file
+df = pd.read_csv("sample_weather.txt")
+
+# Convert date column
+df['date'] = pd.to_datetime(df['date'])
+
+# Extract year and month
+df['year'] = df['date'].dt.year
+df['month'] = df['date'].dt.month
+
+# -------------------------
+# 1. Year-wise Average
+# -------------------------
+year_avg = df.groupby('year')[['temperature','dew_point','wind_speed']].mean()
+print("Year-wise Average:\n", year_avg)
+
+# -------------------------
+# 2. Month-wise Average
+# -------------------------
+month_avg = df.groupby('month')[['temperature','dew_point','wind_speed']].mean()
+print("\nMonth-wise Average:\n", month_avg)
