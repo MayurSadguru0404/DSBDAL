@@ -1,0 +1,87 @@
+import nltk
+import math
+import pandas as pd
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+
+# -------------------- DOWNLOAD REQUIRED PACKAGES --------------------
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('averaged_perceptron_tagger')
+
+# -------------------- SAMPLE DOCUMENT --------------------
+doc = "Data science is an interdisciplinary field. It uses statistics and machine learning for analysis."
+
+# -------------------- 1. TOKENIZATION --------------------
+tokens = word_tokenize(doc)
+
+# -------------------- 2. STOP WORD REMOVAL --------------------
+stop_words = set(stopwords.words('english'))
+filtered = [w for w in tokens if w.lower() not in stop_words]
+
+# -------------------- 3. STEMMING --------------------
+stemmer = PorterStemmer()
+stemmed = [stemmer.stem(w) for w in filtered]
+
+# -------------------- 4. LEMMATIZATION --------------------
+lemmatizer = WordNetLemmatizer()
+lemmatized = [lemmatizer.lemmatize(w) for w in filtered]
+
+# -------------------- 5. POS TAGGING --------------------
+pos_tags = pos_tag(filtered)
+
+print("Tokens:", tokens)
+print("\nFiltered:", filtered)
+print("\nStemmed:", stemmed)
+print("\nLemmatized:", lemmatized)
+print("\nPOS Tags:", pos_tags)
+
+# -------------------- 6. TF-IDF --------------------
+doc1 = "data science uses machine learning"
+doc2 = "machine learning is part of data science"
+
+def preprocess(text):
+    return text.lower().split()
+
+doc1_tokens = preprocess(doc1)
+doc2_tokens = preprocess(doc2)
+
+all_words = set(doc1_tokens).union(set(doc2_tokens))
+
+# Term Frequency
+def tf(doc, words):
+    tf_dict = dict.fromkeys(words, 0)
+    for w in doc:
+        tf_dict[w] += 1
+    for w in tf_dict:
+        tf_dict[w] = tf_dict[w] / len(doc)
+    return tf_dict
+
+tf1 = tf(doc1_tokens, all_words)
+tf2 = tf(doc2_tokens, all_words)
+
+# Inverse Document Frequency
+def idf(docs, words):
+    idf_dict = dict.fromkeys(words, 0)
+    N = len(docs)
+
+    for word in words:
+        count = sum(1 for doc in docs if word in doc)
+        idf_dict[word] = math.log((N + 1) / (count + 1)) + 1
+    return idf_dict
+
+idf_values = idf([doc1_tokens, doc2_tokens], all_words)
+
+# TF-IDF
+def tfidf(tf_val, idf_val):
+    return {w: tf_val[w] * idf_val[w] for w in tf_val}
+
+tfidf1 = tfidf(tf1, idf_values)
+tfidf2 = tfidf(tf2, idf_values)
+
+print("\nTF-IDF Doc1:", tfidf1)
+print("\nTF-IDF Doc2:", tfidf2)
