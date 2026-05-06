@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+
+# Load dataset
+df = pd.read_csv("StudentsPerformance.csv")
+
+# -------------------------------
+# 1. Missing values & inconsistencies
+# -------------------------------
+
+print("Missing values:\n", df.isnull().sum())
+
+# Fill missing values
+num_cols = df.select_dtypes(include=['int64', 'float64']).columns
+df[num_cols] = df[num_cols].fillna(df[num_cols].mean())
+
+cat_cols = df.select_dtypes(include='object').columns
+for col in cat_cols:
+    df[col] = df[col].fillna(df[col].mode()[0])
+
+# -------------------------------
+# 2. Data Transformation
+# (Log transformation to reduce skewness)
+# -------------------------------
+# Step 2: Scaling (Normalization)
+df['math score_norm'] = (df['math score'] - df['math score'].min()) / (df['math score'].max() - df['math score'].min())
+
+# -------------------------------
+# 3. Skewness Detection & Fix
+# -------------------------------
+
+# Check skewness
+print("\nSkewness before:\n", df['math score'].skew())
+
+df['math score_sq'] = df['math score'] ** 2
+
+print("Skewness after fix:", df['math score_sq'].skew())
+
+print("\nFinal Data:\n", df.head())
