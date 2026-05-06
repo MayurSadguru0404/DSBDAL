@@ -1,0 +1,47 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Load dataset
+df = pd.read_csv("iris.csv")
+
+# Features & Target
+X = df.drop('species', axis=1)
+y = df['species']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+# 🔥 HEATMAP (NEW PART)
+labels = ['Setosa', 'Versicolor', 'Virginica']
+
+sns.heatmap(cm, annot=True, fmt='d',
+            xticklabels=labels,
+            yticklabels=labels)
+
+plt.title("Confusion Matrix Heatmap")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
