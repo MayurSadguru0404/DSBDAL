@@ -1,0 +1,20 @@
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = sns.load_dataset('titanic')
+
+# -------------------------
+# 1. Boxplot
+# -------------------------
+sns.boxplot(x='sex', y='age', hue='survived', data=df)
+plt.title("Boxplot: Age vs Gender with Survival")
+plt.show()
+
+# -------------------------
+# 2. Violin Plot
+# -------------------------
+sns.violinplot(x='sex', y='age', hue='survived', data=df)
+plt.title("Violin Plot: Age vs Gender with Survival")
+plt.show()
